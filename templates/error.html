@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Standard Meta -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Site Properties -->
+    <title>{{ config.site.title }} | Error {{ error.status }}</title>
+    <!-- site css -->
+    <link rel="stylesheet" type="text/css" href="../public/css/site.css">
+    <!-- spectre compressed css -->
+    <link rel="stylesheet" href="../public/spectre.css/dist/spectre.min.css">
+    <!-- experimental spectre compressed css -->
+    <link rel="stylesheet" href="../public/spectre.css/dist/spectre-exp.min.css">
+    <!-- spectre icons css -->
+    <link rel="stylesheet" type="text/css" href="../public/spectre.css/dist/spectre-icons.min.css">
+    <!-- favicon -->
+    <link rel="icon" type="image/x-icon" href="../public/assets/favicon.ico">
+</head>
+
+<body>
+    <div class="content" id="home">
+        <!-- content -->
+        <header class="navbar bg-secondary p-sticky" style="top: 0; z-index: 10;">
+            <section class="navbar-section m-2">
+                {% if config.site.logo | length > 0 %}
+                <img src="../{{ config.site.logo }}" class="mr-2" alt="{{ config.site.title }}" height="32">
+                {% endif %}
+                <span class="navbar-brand text-bold mr-2">{{ config.site.title }}</span>
+            </section>
+            <section class="navbar-section">
+                <button class="btn btn-link" onclick="history.back()">Go Back</button>
+            </section>
+        </header>
+        <div class="container grid-lg">
+            <div class="columns">
+                <div class="column col-12">
+                    <!-- body -->
+                    <div class="hero hero-lg text-center">
+                        <div class="hero-body">
+                            <h1>Error {{ error.status }}</h1>
+                            <h3>{{ error.response }}</h3>
+                            <p>{{ error.message }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <header class="navbar bg-secondary">
+            <section class="navbar-section"></section>
+            <section class="navbar-center m-2">
+                <span class="text-muted">Powered by <a href="https://github.com/ElijahToussaint/stevensoni"
+                        target="_blank">Stevensoni</a> &copy; <span id="year"></span></span>
+            </section>
+            <section class="navbar-section"></section>
+        </header>
+    </div>
+    <script src="../public/js/site.js"></script>
+</body>
+
+</html>

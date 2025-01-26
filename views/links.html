@@ -1,0 +1,191 @@
+{% extends "layouts/layout.html" %}
+
+{% block title %}
+<title>Stevensoni | WebUI</title>
+{% endblock %}
+
+{% block content %}
+
+<ul class="tab tab-block">
+    <li class="tab-item">
+        <a href="/seo">SEO</a>
+    </li>
+    <li class="tab-item">
+        <a href="/profile">Profile</a>
+    </li>
+    <li class="tab-item">
+        <a href="/projects">Projects</a>
+    </li>
+    <li class="tab-item active">
+        <a href="/links">Links</a>
+    </li>
+    <li class="tab-item">
+        <a href="/crypto">Crypto</a>
+    </li>
+</ul>
+
+<!-- error alert -->
+{% if errors | length > 0 %}
+{% for error in errors %}
+<div class="toast toast-error my-2" id="errorToast{{ loop.index0 }}">
+    <button class="btn btn-clear float-right" onclick="closeToast('errorToast{{ loop.index0 }}')"></button>
+    <h6>Error</h6>
+    {{ error.msg }}
+</div>
+{% endfor %}
+{% endif %}
+
+<!-- successful alert -->
+{% if success %}
+<div class="toast toast-success my-2" id="successToast">
+    <button class="btn btn-clear float-right" onclick="closeToast('successToast')"></button>
+    <h6>Success</h6>
+    <p>{{ successMsg }}</p>
+</div>
+{% endif %}
+
+<!-- add links -->
+<a class="btn btn-primary my-2" href="#add-link-modal">Add link</a>
+
+<div class="modal" id="add-link-modal">
+    <a href="#close" class="modal-overlay" aria-label="Close"></a>
+    <div class="modal-container">
+        <form name="addLinkForm" id="addLinkForm" method="post" action="/links/add"
+            enctype="application/x-www-form-urlencoded">
+            <div class="modal-header">
+                <a href="#close" class="btn btn-clear float-right" aria-label="Close"></a>
+                <div class="modal-title h5">Add link</div>
+            </div>
+            <div class="modal-body">
+                <div class="content">
+                    <div class="form-group">
+                        <label class="form-label" for="name">Name</label>
+                        <input class="form-input" type="text" id="name" placeholder="Name" name="name">
+                        <label class="form-label" for="url">URL</label>
+                        <input class="form-input" type="url" id="url" placeholder="https://www.example.com" name="url">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input class="btn btn-primary" type="submit" value="Save">
+                <a class="btn" href="#close">Close</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- link fields -->
+<div class="form-group">
+    {% if links | length > 0 %}
+    {% for link in links %}
+    <form id="edit-link-form-{{ loop.index0 }}" action="/links/edit" method="post"
+        enctype="application/x-www-form-urlencoded">
+        <div class="input-group mb-2">
+            <input type="text" class="input-group-addon" value="{{ link.name }}" placeholder="Name" name="name"
+                style="width: 20%;">
+            <input type="url" class="form-input" name="url" value="{{ link.url }}"
+                placeholder="https://www.example.tld">
+            <input type="hidden" name="position" value="{{ link.position }}">
+            {% if loop.first %}
+            <button class="btn input-group-btn disabled" tabindex="-1"><i class="icon icon-arrow-up"></i></button>
+            {% else %}
+            <a class="btn input-group-btn tooltip" data-tooltip="Move Up"
+                href="#move-up-link-modal-{{ loop.index0 }}"><i class="icon icon-arrow-up"></i></a>
+            {% endif %}
+            {% if loop.last %}
+            <button class="btn input-group-btn disabled" tabindex="-1"><i class="icon icon-arrow-down"></i></button>
+            {% else %}
+            <a class="btn input-group-btn tooltip" data-tooltip="Move Down"
+                href="#move-down-link-modal-{{ loop.index0 }}"><i class="icon icon-arrow-down"></i></a>
+            {% endif %}
+            <a class="btn input-group-btn tooltip" data-tooltip="Delete" href="#delete-link-modal-{{ loop.index0 }}"><i
+                    class="icon icon-delete"></i></a>
+            <button class="btn input-group-btn tooltip" data-tooltip="Save"
+                onclick="document.getElementById('edit-link-form-{{ loop.index0 }}').submit();"><i
+                    class="icon icon-check"></i></button>
+        </div>
+    </form>
+    {% endfor %}
+    {% else %}
+    <div class="empty">
+        <div class="empty-icon">
+            <i class="icon icon-3x icon-stop"></i>
+        </div>
+        <p class="empty-title h5">You have no links added</p>
+        <p class="empty-subtitle">Click the "Add link" button to add your link.</p>
+    </div>
+    {% endif %}
+</div>
+
+{% for link in links %}
+<!-- move up link -->
+<div class="modal" id="move-up-link-modal-{{ loop.index0 }}">
+    <a href="#close" class="modal-overlay" aria-label="Close"></a>
+    <div class="modal-container">
+        <form action="/links/moveUp" method="post" enctype="application/x-www-form-urlencoded">
+            <div class="modal-header">
+                <a href="#close" class="btn btn-clear float-right" aria-label="Close"></a>
+                <div class="modal-title h5">Move link up</div>
+            </div>
+            <div class="modal-body">
+                <div class="content">
+                    Are you sure you want to move the <span class="label">{{ link.name }}</span> link up?
+                    <input type="hidden" id="position" name="position" value="{{ link.position }}">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="submit" class="btn btn-primary" value="Yes">
+                <a class="btn" href="#close">Close</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- move down modal -->
+<div class="modal" id="move-down-link-modal-{{ loop.index0 }}">
+    <a href="#close" class="modal-overlay" aria-label="Close"></a>
+    <div class="modal-container">
+        <form action="/links/moveDown" method="post" enctype="application/x-www-form-urlencoded">
+            <div class="modal-header">
+                <a href="#close" class="btn btn-clear float-right" aria-label="Close"></a>
+                <div class="modal-title h5">Move link down</div>
+            </div>
+            <div class="modal-body">
+                <div class="content">
+                    Are you sure you want to move the <span class="label">{{ link.name }}</span> link down?
+                    <input type="hidden" id="position" name="position" value="{{ link.position }}">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="submit" class="btn btn-primary" value="Yes">
+                <a class="btn" href="#close">Close</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- delete link modal -->
+<div class="modal" id="delete-link-modal-{{ loop.index0 }}">
+    <a href="#close" class="modal-overlay" aria-label="Close"></a>
+    <div class="modal-container">
+        <form action="/links/delete" method="post" enctype="application/x-www-form-urlencoded">
+            <div class="modal-header">
+                <a href="#close" class="btn btn-clear float-right" aria-label="Close"></a>
+                <div class="modal-title h5">Delete link</div>
+            </div>
+            <div class="modal-body">
+                <div class="content">
+                    Are you sure you want to delete the <span class="label">{{ link.name }}</span> link?
+                    <input type="hidden" id="position" name="position" value="{{ link.position }}">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="submit" class="btn btn-primary" value="Yes">
+                <a class="btn" href="#close">Close</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endfor %}
+
+{% endblock %}

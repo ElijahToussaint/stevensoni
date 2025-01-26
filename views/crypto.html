@@ -1,0 +1,191 @@
+{% extends "layouts/layout.html" %}
+
+{% block title %}
+<title>Stevensoni | WebUI</title>
+{% endblock %}
+
+{% block content %}
+
+<ul class="tab tab-block">
+    <li class="tab-item">
+        <a href="/seo">SEO</a>
+    </li>
+    <li class="tab-item">
+        <a href="/profile">Profile</a>
+    </li>
+    <li class="tab-item">
+        <a href="/projects">Projects</a>
+    </li>
+    <li class="tab-item">
+        <a href="/links">Links</a>
+    </li>
+    <li class="tab-item active">
+        <a href="/crypto">Crypto</a>
+    </li>
+</ul>
+
+<!-- error alert -->
+{% if errors | length > 0 %}
+{% for error in errors %}
+<div class="toast toast-error my-2" id="errorToast{{ loop.index0 }}">
+    <button class="btn btn-clear float-right" onclick="closeToast('errorToast{{ loop.index0 }}')"></button>
+    <h6>Error</h6>
+    {{ error.msg }}
+</div>
+{% endfor %}
+{% endif %}
+
+<!-- successful alert -->
+{% if success %}
+<div class="toast toast-success my-2" id="successToast">
+    <button class="btn btn-clear float-right" onclick="closeToast('successToast')"></button>
+    <h6>Success</h6>
+    <p>{{ successMsg }}</p>
+</div>
+{% endif %}
+
+<a class="btn btn-primary my-2" href="#add-crypto-modal">Add crypto</a>
+
+<div class="modal" id="add-crypto-modal">
+    <a href="#close" class="modal-overlay" aria-label="Close"></a>
+    <div class="modal-container">
+        <form name="addCryptoForm" action="/crypto/add" method="post" enctype="application/x-www-form-urlencoded">
+            <div class="modal-header">
+                <a href="#close" class="btn btn-clear float-right" aria-label="Close"></a>
+                <div class="modal-title h5">Add crypto</div>
+            </div>
+            <div class="modal-body">
+                <div class="content">
+                    <div class="form-group">
+                        <label class="form-label" for="cryptocurrency">Cryptocurrency</label>
+                        <input class="form-input" type="text" name="name" id="cryptocurrency"
+                            placeholder="Cryptocurrency">
+                        <label class="form-label" for="wallet-address">Wallet Address</label>
+                        <input class="form-input" type="text" name="address" id="wallet-address"
+                            placeholder="Wallet Address">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input class="btn btn-primary" type="submit" value="Save">
+                <a class="btn" href="#close">Close</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- crypto fields -->
+<div class="form-group">
+    {% if crypto | length > 0 %}
+    {% for currency in crypto %}
+    <form id="edit-crypto-form-{{ loop.index0 }}" action="/crypto/edit" method="post"
+        enctype="application/x-www-form-urlencoded">
+        <div class="input-group mb-2">
+            <input type="text" class="input-group-addon" name="name" value="{{ currency.name }}"
+                placeholder="Cryptocurrency" style="width: 20%;">
+            <input type="text" class="form-input" name="address" value="{{ currency.address }}"
+                placeholder="Wallet Address">
+            <input type="hidden" name="position" value="{{ currency.position }}">
+            {% if loop.first %}
+            <button class="btn input-group-btn disabled" tabindex="-1"><i class="icon icon-arrow-up"></i></button>
+            {% else %}
+            <a class="btn input-group-btn tooltip" href="#move-up-crypto-modal-{{ loop.index0 }}"
+                data-tooltip="Move Up"><i class="icon icon-arrow-up"></i></a>
+            {% endif %}
+            {% if loop.last %}
+            <button class="btn input-group-btn disabled" tabindex="-1"><i class="icon icon-arrow-down"></i></button>
+            {% else %}
+            <a class="btn input-group-btn tooltip" href="#move-down-crypto-modal-{{ loop.index0 }}"
+                data-tooltip="Move Down"><i class="icon icon-arrow-down"></i></a>
+            {% endif %}
+            <a class="btn input-group-btn tooltip" data-tooltip="Delete"
+                href="#delete-crypto-modal-{{ loop.index0 }}"><i class="icon icon-delete"></i></a>
+            <button class="btn input-group-btn tooltip" data-tooltip="Save"
+                onclick="document.getElementById('edit-crypto-form-{{ loop.index0 }}').submit();"><i
+                    class="icon icon-check"></i></button>
+        </div>
+    </form>
+    {% endfor %}
+    {% else %}
+    <div class="empty">
+        <div class="empty-icon">
+            <i class="icon icon-3x icon-stop"></i>
+        </div>
+        <p class="empty-title h5">You have no cryptocurrency added</p>
+        <p class="empty-subtitle">Click the "Add crypto" button to add your cryptocurrency.</p>
+    </div>
+    {% endif %}
+</div>
+
+{% for currency in crypto %}
+<!-- move up link -->
+<div class="modal" id="move-up-crypto-modal-{{ loop.index0 }}">
+    <a href="#close" class="modal-overlay" aria-label="Close"></a>
+    <div class="modal-container">
+        <form action="/crypto/moveUp" method="post" enctype="application/x-www-form-urlencoded">
+            <div class="modal-header">
+                <a href="#close" class="btn btn-clear float-right" aria-label="Close"></a>
+                <div class="modal-title h5">Move cryptocurrency up</div>
+            </div>
+            <div class="modal-body">
+                <div class="content">
+                    Are you sure you want to move the <span class="label">{{ currency.name }}</span> link up?
+                    <input type="hidden" id="position" name="position" value="{{ currency.position }}">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="submit" class="btn btn-primary" value="Yes">
+                <a class="btn" href="#close">Close</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- move down modal -->
+<div class="modal" id="move-down-crypto-modal-{{ loop.index0 }}">
+    <a href="#close" class="modal-overlay" aria-label="Close"></a>
+    <div class="modal-container">
+        <form action="/crypto/moveDown" method="post" enctype="application/x-www-form-urlencoded">
+            <div class="modal-header">
+                <a href="#close" class="btn btn-clear float-right" aria-label="Close"></a>
+                <div class="modal-title h5">Move cryptocurrency down</div>
+            </div>
+            <div class="modal-body">
+                <div class="content">
+                    Are you sure you want to move the <span class="label">{{ currency.name }}</span> link down?
+                    <input type="hidden" id="position" name="position" value="{{ currency.position }}">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="submit" class="btn btn-primary" value="Yes">
+                <a class="btn" href="#close">Close</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- delete crypto modal -->
+<div class="modal" id="delete-crypto-modal-{{ loop.index0 }}">
+    <a href="#close" class="modal-overlay" aria-label="Close"></a>
+    <div class="modal-container">
+        <form action="/crypto/delete" method="post" enctype="application/x-www-form-urlencoded">
+            <div class="modal-header">
+                <a href="#close" class="btn btn-clear float-right" aria-label="Close"></a>
+                <div class="modal-title h5">Delete cryptocurrency</div>
+            </div>
+            <div class="modal-body">
+                <div class="content">
+                    Are you sure you want to delete the <span class="label">{{ currency.name }}</span> cryptocurrency?
+                    <input type="hidden" id="position" name="position" value="{{ currency.position }}">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="submit" class="btn btn-primary" value="Yes">
+                <a class="btn" href="#close">Close</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endfor %}
+
+{% endblock %}

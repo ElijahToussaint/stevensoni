@@ -1,0 +1,203 @@
+{% extends "preview/layouts/layout.html" %}
+
+{% block title %}
+<title>{{ config.site.title }}</title>
+{% endblock %}
+
+{% block content %}
+
+{% if config.site | length > 0 %}
+<div class="hero hero-sm">
+    <div class="hero-body">
+        <div class="container grid-lg">
+            <div class="columns">
+                {% if config.site.avatar | length > 0 %}
+                <div class="column col-12 text-center">
+                    <img class="img-fit-cover s-circle m-2" src="{{ config.site.avatar }}"
+                        alt="{{ config.site.author }}" title="{{ config.site.name }}"
+                        style="width: 200px; height: 200px;">
+                </div>
+                {% endif %}
+                {% if config.site.author | length > 0 %}
+                <div class="column col-12 text-center">
+                    <h5>{{ config.site.author }}</h5>
+                </div>
+                {% endif %}
+                {% if config.site.email | length > 0 %}
+                <div class="column col-12 text-center">
+                    <a href="mailto:{{ config.site.email }}"
+                        class="btn btn-action btn-primary s-circle m-2 tooltip tooltip-bottom"
+                        data-tooltip="Send email"><i class="icon icon-mail"></i></a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% if config.site.about | length > 0 %}
+<div class="hero hero-sm" id="about">
+    <div class="hero-body">
+        <div class="container grid-lg">
+            <div class="columns">
+                <div class="column col-12">
+                    <h1>About Me</h1>
+                </div>
+                <div class="column col-12">
+                    {% if config.site.about | length > 1000 %}
+                    <p>{{ config.site.about | truncate(1000, true, "...") }}
+                        <a href="#about-modal">Read More</a>
+                    </p>
+                    {% else %}
+                    <p>{{ config.site.about }}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% if config.site.about | length > 1000 %}
+<!-- about modal -->
+<div class="modal modal-lg" id="about-modal">
+    <a href="#close" class="modal-overlay" aria-label="Close"></a>
+    <div class="modal-container">
+        <div class="modal-header">
+            <a href="#close" class="btn btn-clear float-right" aria-label="Close"></a>
+            <div class="modal-title h5">About Me</div>
+        </div>
+        <div class="modal-body">
+            <div class="content">
+                {{ config.site.about }}
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a class="btn" href="#close">Close</a>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endif %}
+{% if projects | length > 0 %}
+<div class="hero hero-sm" id="projects">
+    <div class="hero-body">
+        <div class="container grid-lg">
+            <div class="columns">
+                <div class="column col-12">
+                    <h1>My Projects</h1>
+                </div>
+                <div class="column col-12">
+                    <div class="timeline mt-2">
+                        {% for project in projects %}
+                        <div class="timeline-item" id="timeline-example-{{ loop.index0 }}">
+                            <div class="timeline-left"><a class="timeline-icon tooltip"
+                                    href="#timeline-example-{{ loop.index0 }}" data-tooltip="{{ project.date }}"></a>
+                            </div>
+                            <div class="timeline-content">
+                                <div class="tile">
+                                    <div class="tile-content">
+                                        <p class="tile-title h6">{{ project.title }}</p>
+                                        {% if project.description | length > 500 %}
+                                        <p class="tile-subtitle">{{ project.description | truncate(500, true, "...") }}
+                                            <a href="#project-modal-{{ loop.index0 }}">Read More</a>
+                                        </p>
+                                        {% else %}
+                                        <p class="tile-subtitle">{{ project.description }}</p>
+                                        {% endif %}
+                                    </div>
+                                    <div class="tile-action">
+                                        {% if project.link | length > 0 %}
+                                        <a href="{{ project.link }}" target="_blank" class="btn tooltip"
+                                            data-tooltip="Go to link"><i class="icon icon-link"></i></a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% if project.description | length > 500 %}
+                        <!-- project modal -->
+                        <div class="modal modal-lg" id="project-modal-{{ loop.index0 }}">
+                            <a href="#close" class="modal-overlay" aria-label="Close"></a>
+                            <div class="modal-container">
+                                <div class="modal-header">
+                                    <a href="#close" class="btn btn-clear float-right" aria-label="Close"></a>
+                                    <div class="modal-title h5">{{ project.title }}</div>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="content">
+                                        {{ project.description }}
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    {% if project.link | length > 0 %}
+                                    <a href="{{ project.link }}" target="_blank" class="btn btn-primary">Go to
+                                        project</a>
+                                    {% endif %}
+                                    <a class="btn" href="#close">Close</a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% if links | length > 0 %}
+<div class="hero hero-sm" id="socials">
+    <div class="hero-body">
+        <div class="container grid-lg">
+            <div class="columns">
+                <div class="column col-12">
+                    <h1>My Socials</h1>
+                </div>
+                <div class="column col-12">
+                    {% for link in links %}
+                    <div class="form-group">
+                        <label class="form-label" for="{{ link.name }}">{{ link.name }}</label>
+                        <div class="input-group">
+                            <input type="text" class="form-input" id="{{ link.name }}" value="{{ link.url }}"
+                                id="{{ link.url }}" readonly>
+                            <a class="btn input-group-btn tooltip" data-tooltip="Go to link" href="{{ link.url }}"
+                                target="_blank">
+                                <i class="icon icon-link"></i></a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% if crypto | length > 0 %}
+<div class="hero hero-sm" id="donate">
+    <div class="hero-body">
+        <div class="container grid-lg">
+            <div class="columns">
+                <div class="column col-12">
+                    <h1>Donate</h1>
+                </div>
+                <div class="column col-12">
+                    {% for currency in crypto %}
+                    <div class="form-group">
+                        <label class="form-label" for="{{ currency.address }}">{{ currency.name }}</label>
+                        <div class="input-group">
+                            <input type="text" class="form-input" value="{{ currency.address }}"
+                                id="{{ currency.address }}" readonly>
+                            <button class="btn input-group-btn tooltip" data-tooltip="Copy" id="copyButton"
+                                onclick="copyToClipboard('{{ currency.address }}')"><i
+                                    class="icon icon-copy"></i></button>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}

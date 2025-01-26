@@ -1,0 +1,14 @@
+node_modules/
+src/config/config.hjson
+src/data/crypto.hjson
+src/data/errors.hjson
+src/data/links.hjson
+src/data/projects.hjson
+public/css/stylesheet.css
+public/assets/*
+!public/assets/default.jpg
+!public/assets/favicon.ico
+!public/assets/logo.png
+!public/assets/logo.svg
+!public/assets/stevensoni-logo.svg
+_site/

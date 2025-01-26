@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Standard Meta -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Site Properties -->
+    {% block title %}{% endblock %}
+    <!-- site css -->
+    <link rel="stylesheet" type="text/css" href="./public/css/site.css">
+    <!-- spectre compressed css -->
+    <link rel="stylesheet" href="./public/spectre.css/dist/spectre.min.css">
+    <!-- experimental spectre compressed css -->
+    <link rel="stylesheet" href="./public/spectre.css/dist/spectre-exp.min.css">
+    <!-- spectre icons css -->
+    <link rel="stylesheet" type="text/css" href="./public/spectre.css/dist/spectre-icons.min.css">
+    <!-- favicon -->
+    <link rel="icon" type="image/x-icon" href="./public/assets/favicon.ico">
+</head>
+
+<body>
+    <div class="content">
+        <!-- content -->
+        {% include "layouts/navbar.html" %}
+        <div class="container grid-lg">
+            <div class="columns">
+                <div class="column col-12">
+                    <!-- body -->
+                    {% block content %}{% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        {% include "layouts/footer.html" %}
+    </div>
+    <script src="./public/js/site.js"></script>
+</body>
+
+</html>

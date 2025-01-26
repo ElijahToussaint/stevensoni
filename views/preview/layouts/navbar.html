@@ -1,0 +1,46 @@
+<header class="navbar bg-secondary p-sticky" style="top: 0; z-index: 10;">
+    <section class="navbar-section m-2">
+        {% if config.site.logo | length > 0 %}
+        <img src="{{ config.site.logo }}" class="mr-2" alt="{{ config.site.title }}" height="32">
+        {% endif %}
+        <span class="navbar-brand text-bold mr-2">{{ config.site.title }}</span>
+    </section>
+    <section class="navbar-section">
+        <div class="hide-sm">
+            <a href="#home" class="btn btn-link">Home</a>
+            {% if config.site.about | length > 0 %}
+            <a href="#about" class="btn btn-link">About</a>
+            {% endif %}
+            {% if projects | length > 0 %}
+            <a href="#projects" class="btn btn-link">Projects</a>
+            {% endif %}
+            {% if links | length > 0 %}
+            <a href="#socials" class="btn btn-link">Socials</a>
+            {% endif %}
+            {% if crypto | length > 0 %}
+            <a href="#donate" class="btn btn-link">Donate</a>
+            {% endif %}
+        </div>
+        <div class="show-sm">
+            <div class="dropdown dropdown-right m-2">
+                <a class="btn btn-link dropdown-toggle" tabindex="0">
+                    <i class="icon icon-menu"></i></a>
+                <ul class="menu text-left">
+                    <li class="menu-item"><a href="#home" class="btn btn-link">Home</a></li>
+                    {% if config.site.about | length > 0 %}
+                    <li class="menu-item"><a href="#about" class="btn btn-link">About</a></li>
+                    {% endif %}
+                    {% if projects | length > 0 %}
+                    <li class="menu-item"><a href="#projects" class="btn btn-link">Projects</a></li>
+                    {% endif %}
+                    {% if links | length > 0 %}
+                    <li class="menu-item"><a href="#socials" class="btn btn-link">Socials</a></li>
+                    {% endif %}
+                    {% if crypto | length > 0 %}
+                    <li class="menu-item"><a href="#donate" class="btn btn-link">Donate</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </section>
+</header>

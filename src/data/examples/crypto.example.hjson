@@ -1,0 +1,52 @@
+[
+  {
+    name: Bitcoin
+    address: miCT6gpkETJN8kJwzyjt2PeDdhej8XupBk
+    position: 0
+  }
+  {
+    name: Ethereum
+    address: 0xBCFC8AC835B39AAD874068BCD2ACDF53A2C70FC5
+    position: 1
+  }
+  {
+    name: Bitcoin Cash
+    address: mwE4RXJ4NY62hn4G2jUvegAkvyD9Ydvbbm
+    position: 2
+  }
+  {
+    name: Litecoin
+    address: mortdNPZPHgnLKpC91vdtgn8yx1BYQCMHc
+    position: 3
+  }
+  {
+    name: Dogecoin
+    address: msCQeRpC6fwS4dT2GdjAtc9DRYMKdAjawk
+    position: 4
+  }
+  {
+    name: Dash
+    address: mkxkBkSkb5PRNL2mjYeS8VnRmU4bgtmnJX
+    position: 5
+  }
+  {
+    name: Feathercoin
+    address: mfmUoJt28LmZnAnjmVTWskNJDWUXhmZMK1
+    position: 6
+  }
+  {
+    name: Monacoin
+    address: myMT9G8VoztaVbuUam2MX5jBAxYNGFgX6Y
+    position: 7
+  }
+  {
+    name: Terracoin
+    address: mm76KrnjMo7knrYLpX8kVLD7Z94HXDQuBJ
+    position: 8
+  }
+  {
+    name: Viacoin
+    address: mr7HAZ6z7J5NV2ucskkKmLZkgwuC19hEy2
+    position: 9
+  }
+]

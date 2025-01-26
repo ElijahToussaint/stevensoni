@@ -1,0 +1,160 @@
+{% extends "layouts/layout.html" %}
+
+{% block title %}
+<title>Stevensoni | WebUI</title>
+{% endblock %}
+
+{% block content %}
+
+<ul class="tab tab-block">
+    <li class="tab-item">
+        <a href="/seo">SEO</a>
+    </li>
+    <li class="tab-item">
+        <a href="/profile">Profile</a>
+    </li>
+    <li class="tab-item active">
+        <a href="/projects">Projects</a>
+    </li>
+    <li class="tab-item">
+        <a href="/links">Links</a>
+    </li>
+    <li class="tab-item">
+        <a href="/crypto">Crypto</a>
+    </li>
+</ul>
+
+<!-- error alert -->
+{% if errors | length > 0 %}
+{% for error in errors %}
+<div class="toast toast-error my-2" id="errorToast{{ loop.index0 }}">
+    <button class="btn btn-clear float-right" onclick="closeToast('errorToast{{ loop.index0 }}')"></button>
+    <h6>Error</h6>
+    {{ error.msg }}
+</div>
+{% endfor %}
+{% endif %}
+
+<!-- successful alert -->
+{% if success %}
+<div class="toast toast-success my-2" id="successToast">
+    <button class="btn btn-clear float-right" onclick="closeToast('successToast')"></button>
+    <h6>Success</h6>
+    <p>{{ successMsg }}</p>
+</div>
+{% endif %}
+
+<!-- add project to timeline -->
+<a class="btn btn-primary my-2" href="#projects-modal">Add project</a>
+
+<div class="modal" id="projects-modal">
+    <a href="#close" class="modal-overlay" aria-label="Close"></a>
+    <div class="modal-container">
+        <div class="modal-header">
+            <a href="#close" class="btn btn-clear float-right" aria-label="Close"></a>
+            <div class="modal-title h5">Add project</div>
+        </div>
+        <div class="modal-body">
+            <form id="add-project-form" action="/projects/add" method="post"
+                enctype="application/x-www-form-urlencoded">
+                <div class="content">
+                    <div class="form-group">
+                        <label class="form-label" for="title">Title</label>
+                        <input class="form-input" type="text" id="title" placeholder="Title" name="title">
+                        <label class="form-label" for="date">Date</label>
+                        <input class="form-input" type="date" id="date" name="date" placeholder="">
+                        <label class="form-label" for="description">Description</label>
+                        <textarea class="form-input" id="description" placeholder="Textarea" rows="3"
+                            name="description"></textarea>
+                        <label class="form-label" for="link">Link</label>
+                        <input class="form-input" type="url" id="link" name="link"
+                            placeholder="https://www.example.tld">
+                    </div>
+            </form>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" onclick="document.getElementById('add-project-form').submit();">Save</button>
+        <a class="btn" href="#close">Close</a>
+    </div>
+</div>
+</div>
+
+<!-- projects timeline -->
+{% if projects | length > 0 %}
+<div class="timeline mt-2">
+    {% for project in projects %}
+    <div class="timeline-item" id="{{ project.title }}-timeline">
+        <div class="timeline-left"><span class="timeline-icon"></span></div>
+        <div class="timeline-content">
+            <form id="edit-project-{{ loop.index0 }}" action="/projects/edit" method="post"
+                enctype="application/x-www-form-urlencoded">
+                <div class="tile">
+                    <div class="tile-content">
+                        <div class="form-group">
+                            <input class="form-input" type="text" id="project-title-{{ loop.revindex0 }}"
+                                value="{{ project.title }}" name="title" placeholder="Title">
+                        </div>
+                        <div class="form-group">
+                            <input class="form-input" type="date" id="project-date-{{ loop.revindex0 }}"
+                                value="{{ project.date }}" name="date" placeholder="Date">
+                        </div>
+                        <div class="form-group">
+                            <textarea class="form-input" id="project-description-{{ loop.revindex0 }}"
+                                name="description" placeholder="Description"
+                                rows="3">{{ project.description }}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <input class="form-input" type="project-url-{{ loop.revindex0 }}" id="input-example-1"
+                                value="{{ project.link }}" name="link" placeholder="URL">
+                        </div>
+                        <input type="hidden" name="position" value="{{ loop.index0 }}">
+                    </div>
+                    <div class="tile-action">
+                        <button onclick="document.getElementById('edit-project-{{ loop.index0 }}').submit();"
+                            class="btn tooltip" data-tooltip="Save"><i class="icon icon-check"></i></button>
+                        <a href="#delete-projects-modal-{{ loop.index0 }}" class="btn tooltip" data-tooltip="Delete"><i
+                                class="icon icon-delete"></i></a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="empty">
+    <div class="empty-icon">
+        <i class="icon icon-3x icon-stop"></i>
+    </div>
+    <p class="empty-title h5">You have no projects added</p>
+    <p class="empty-subtitle">Click the "Add project" button to add your project.</p>
+</div>
+{% endif %}
+
+{% for project in projects %}
+<!-- delete project modal -->
+<div class="modal" id="delete-projects-modal-{{ loop.index0 }}">
+    <a href="#close" class="modal-overlay" aria-label="Close"></a>
+    <div class="modal-container">
+        <form action="/projects/delete" method="post" enctype="application/x-www-form-urlencoded">
+            <div class="modal-header">
+                <a href="#close" class="btn btn-clear float-right" aria-label="Close"></a>
+                <div class="modal-title h5">Delete project</div>
+            </div>
+            <div class="modal-body">
+                <div class="content">
+                    Are you sure you want to delete the <span class="label">{{ project.title }}</span> project?
+                    <input type="hidden" id="position" name="position" value="{{ loop.index0 }}">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="submit" class="btn btn-primary" value="Yes">
+                <a class="btn" href="#close">Close</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endfor %}
+
+{% endblock %}

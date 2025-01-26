@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Standard Meta -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="all">
+    <meta name="author" content="{{ config.site.author }}">
+    <meta name="description" content="{{ config.site.description | striptags(true) | truncate(200) }}">
+    <meta name="keywords" content="{{ config.site.keywords | string }}">
+    <!-- Site Properties -->
+    {% block title %}{% endblock %}
+    <!-- site css -->
+    <link rel="stylesheet" type="text/css" href="./public/css/site.css">
+    <!-- custom css -->
+    <link rel="stylesheet" type="text/css" href="./public/css/stylesheet.css">
+    <!-- spectre compressed css -->
+    <link rel="stylesheet" href="./public/spectre.css/dist/spectre.min.css">
+    <!-- experimental spectre compressed css -->
+    <link rel="stylesheet" href="./public/spectre.css/dist/spectre-exp.min.css">
+    <!-- spectre icons css -->
+    <link rel="stylesheet" type="text/css" href="./public/spectre.css/dist/spectre-icons.min.css">
+    <!-- favicon -->
+    <link rel="icon" type="image/x-icon" href="./public/assets/favicon.ico">
+</head>
+
+<body>
+    <div class="content" id="home">
+        <!-- content -->
+        {% include "preview/layouts/navbar.html" %}
+        <div class="container grid-lg">
+            <div class="columns">
+                <div class="column col-12">
+                    <!-- body -->
+                    {% block content %}{% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        {% include "preview/layouts/footer.html" %}
+    </div>
+    <script src="./public/js/site.js"></script>
+</body>
+
+</html>

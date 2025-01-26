@@ -1,0 +1,52 @@
+[
+  {
+    name: Github
+    url: https://www.github.com/
+    position: 0
+  }
+  {
+    name: Gitlab
+    url: https://www.gitlab.com/
+    position: 1
+  }
+  {
+    name: Gitea
+    url: https://www.gitea.io/
+    position: 2
+  }
+  {
+    name: Forgejo
+    url: https://forgejo.org/
+    position: 3
+  }
+  {
+    name: Codeberg
+    url: https://codeberg.org/
+    position: 4
+  }
+  {
+    name: Gogs
+    url: https://gogs.io/
+    position: 5
+  }
+  {
+    name: Bitbucket
+    url: https://bitbucket.org/
+    position: 6
+  }
+  {
+    name: OneDev
+    url: https://onedev.io/
+    position: 7
+  }
+  {
+    name: Sourcehut
+    url: https://sr.ht/
+    position: 8
+  }
+  {
+    name: Radicle
+    url: https://radicle.xyz/
+    position: 9
+  }
+]

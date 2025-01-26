@@ -1,0 +1,75 @@
+{% extends "layouts/layout.html" %}
+
+{% block title %}
+<title>Stevensoni | WebUI</title>
+{% endblock %}
+
+{% block content %}
+
+<ul class="tab tab-block">
+    <li class="tab-item">
+        <a href="/seo">SEO</a>
+    </li>
+    <li class="tab-item active">
+        <a href="/profile">Profile</a>
+    </li>
+    <li class="tab-item">
+        <a href="/projects">Projects</a>
+    </li>
+    <li class="tab-item">
+        <a href="/links">Links</a>
+    </li>
+    <li class="tab-item">
+        <a href="/crypto">Crypto</a>
+    </li>
+</ul>
+
+<!-- error alert -->
+{% if errors | length > 0 %}
+{% for error in errors %}
+<div class="toast toast-error my-2" id="errorToast{{ loop.index0 }}">
+    <button class="btn btn-clear float-right" onclick="closeToast('errorToast{{ loop.index0 }}')"></button>
+    <h6>Error</h6>
+    {{ error.msg }}
+</div>
+{% endfor %}
+{% endif %}
+
+<!-- successful alert -->
+{% if success %}
+<div class="toast toast-success my-2" id="successToast">
+    <button class="btn btn-clear float-right" onclick="closeToast('successToast')"></button>
+    <h6>Success</h6>
+    <p>{{ successMsg }}</p>
+</div>
+{% endif %}
+
+<form name="" action="/profile" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label class="form-label" for="name">Name</label>
+        <input class="form-input" type="text" id="name" value="{{ config.site.author }}" placeholder="Name" name="name">
+    </div>
+    <div class="form-group">   
+        <label class="form-label" for="email">Email</label>
+        <input class="form-input" type="email" id="email" value="{{ config.site.email }}" placeholder="Email"
+            name="email">
+    </div>
+    <div class="form-group">
+        <label class="form-label" for="about">About</label>
+        <textarea class="form-input" id="about" placeholder="Write about yourself." rows="3"
+            name="about">{{ config.site.about }}</textarea>
+    </div>
+    <div class="form-group">
+        <label class="form-label" for="profile-picture">Profile Picture</label>
+        {% if config.site.avatar | length > 0 %}
+        <img class="img-fit-cover my-2" src="{{ config.site.avatar }}" width="100" alt="avatar" title="current profile picture">
+        {% endif %}
+        <input class="form-input" id="profile-picture" value="{{ config.site.avatar }}" accept=".png, .jpg, .jpeg, .gif"
+            type="file" name="profile-picture">
+    </div>
+    <div class="form-group">
+        <input class="float-right btn btn-primary my-2" type="submit" value="Save">
+    </div>
+</form>
+
+{% endblock %}
