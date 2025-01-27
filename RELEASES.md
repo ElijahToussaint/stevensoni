@@ -1,4 +1,4 @@
-# Stevensoni v1.0.0 Release (2025-01-07)
+# Stevensoni v1.0.0 Release (2025-01-26)
 
 - Open source, [AGPL License](/LICENSE).
 - Lightweight and easy to deploy.
