@@ -17,6 +17,7 @@ const projectsPath = path.join(__dirname, 'src/data/projects.hjson');
 const linksPath = path.join(__dirname, 'src/data/links.hjson');
 const cryptoPath = path.join(__dirname, 'src/data/crypto.hjson');
 const errorsPath = path.join(__dirname, 'src/data/errors.hjson');
+const stylesheetPath = path.join(__dirname, 'public/css/stylesheet.css');
 // locate example config files
 const exampleConfigPath = path.join(__dirname, 'src/config/example/config.example.hjson');
 const exampleErrorsPath = path.join(__dirname, 'src/data/examples/errors.example.hjson');
@@ -35,6 +36,9 @@ if (!fs.existsSync(linksPath)) {
 }
 if (!fs.existsSync(cryptoPath)) {
     fs.writeFileSync(cryptoPath, hjson.stringify([]));
+}
+if (!fs.existsSync(stylesheetPath)) {
+    fs.writeFileSync(stylesheetPath, "");
 }
 // read config files
 const readConfig = fs.readFileSync(configPath, 'utf8');
